@@ -1,13 +1,20 @@
-import { Pressable } from "react-native";
 import Text from "./Text";
+import { Link } from "react-router-native";
 
-const AppBarTab = ({ children }) => {
+const styles = {
+  container: {
+    // marginRight: 10,
+    marginLeft: 10,
+  },
+};
+
+const AppBarTab = ({ children, to }) => {
   return (
-    <Pressable onPress={() => console.log("press")}>
+    <Link to={to} onPress={() => console.log("press")} style={styles.container}>
       <Text color={"textSecondary"} fontWeight={"bold"} fontSize={"heading"}>
         {children}
       </Text>
-    </Pressable>
+    </Link>
   );
 };
 
