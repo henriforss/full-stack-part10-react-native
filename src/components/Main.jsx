@@ -5,6 +5,7 @@ import RepositoryList from "./RepositoryList";
 import AppBar from "./AppBar";
 import theme from "../theme";
 import SignIn from "./SignIn";
+import AuthStorage from "../utils/authStorage";
 
 const styles = StyleSheet.create({
   container: {

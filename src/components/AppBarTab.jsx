@@ -8,9 +8,9 @@ const styles = {
   },
 };
 
-const AppBarTab = ({ children, to }) => {
+const AppBarTab = ({ children, to, onPress }) => {
   return (
-    <Link to={to} onPress={() => console.log("press")} style={styles.container}>
+    <Link to={to} onPress={onPress} style={styles.container}>
       <Text color={"textSecondary"} fontWeight={"bold"} fontSize={"heading"}>
         {children}
       </Text>

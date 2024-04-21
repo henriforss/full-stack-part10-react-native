@@ -16,6 +16,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-between",
     gap: 5,
+    flex: 1,
   },
   language: {
     marginTop: 10,
