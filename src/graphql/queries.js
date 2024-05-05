@@ -31,3 +31,35 @@ export const GET_AUTHORIZED_USER = gql`
     }
   }
 `;
+
+export const GET_SINGLE_REPOSITORY = gql`
+  query GetSingleRepo($repositoryId: ID!) {
+    repository(id: $repositoryId) {
+      id
+      fullName
+      forksCount
+      description
+      language
+      createdAt
+      stargazersCount
+      ratingAverage
+      reviewCount
+      ownerAvatarUrl
+      url
+      reviews {
+        edges {
+          node {
+            createdAt
+            id
+            rating
+            text
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+`;
