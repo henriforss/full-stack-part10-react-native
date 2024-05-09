@@ -10,6 +10,7 @@ const theme = {
     backgroundAppBar: "navy",
     languageBackground: "royalblue",
     appBackground: "lightgray",
+    filterBackground: "darkgray",
     itemBackground: "white",
   },
   fontSizes: {

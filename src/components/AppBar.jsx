@@ -44,6 +44,8 @@ const AppBar = () => {
         ) : (
           <AppBarTab to={"/signin"}>Sign in</AppBarTab>
         )}
+
+        {!isAuthorized ? <AppBarTab to={"/signup"}>Sign up</AppBarTab> : null}
       </ScrollView>
     </View>
   );
