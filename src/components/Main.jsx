@@ -24,6 +24,10 @@ const Main = () => {
       <Routes>
         <Route path="/" element={<RepositoryList />} />
         <Route path="/review" element={<CreateReview />} />
+        <Route
+          path="/myreviews"
+          element={<RepositoryList myReviews={true} />}
+        />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/:id" element={<RepositoryList singleView={true} />} />

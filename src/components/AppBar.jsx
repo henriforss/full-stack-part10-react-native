@@ -37,7 +37,13 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarTab to={"/"}>Repositories</AppBarTab>
 
-        {isAuthorized ? <AppBarTab to={"/review"}>Review</AppBarTab> : null}
+        {isAuthorized ? (
+          <AppBarTab to={"/review"}>Create a review</AppBarTab>
+        ) : null}
+
+        {isAuthorized ? (
+          <AppBarTab to={"/myreviews"}>My reviews</AppBarTab>
+        ) : null}
 
         {isAuthorized ? (
           <AppBarTab onPress={signOut}>Sign out</AppBarTab>

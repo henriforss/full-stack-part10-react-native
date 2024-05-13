@@ -2,12 +2,17 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import { useParams } from "react-router-native";
-import { GET_REPOSITORIES, GET_SINGLE_REPOSITORY } from "../graphql/queries";
+import {
+  GET_REPOSITORIES,
+  GET_SINGLE_REPOSITORY,
+  GET_AUTHORIZED_USER,
+} from "../graphql/queries";
 import RepositoryItem from "./RepositoryItem";
 import SingleRepository from "./SingleRepository";
 import RNPickerSelect from "react-native-picker-select";
 import theme from "../theme";
 import _ from "lodash";
+import MyReviews from "./MyReviews";
 
 const styles = StyleSheet.create({
   separator: {
@@ -33,6 +38,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 export const RepositoryListContainer = ({
   repositories,
   singleView,
+  myReviews,
   handleOrderChange,
   searchKeyword,
   setSearchKeyword,
@@ -42,6 +48,8 @@ export const RepositoryListContainer = ({
     return repositories ? (
       <SingleRepository repositories={repositories} singleView={singleView} />
     ) : null;
+  } else if (myReviews) {
+    return repositories ? <MyReviews reviews={repositories} /> : null;
   } else {
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -105,7 +113,7 @@ export const RepositoryListContainer = ({
   }
 };
 
-const RepositoryList = ({ singleView }) => {
+const RepositoryList = ({ singleView, myReviews }) => {
   const { id } = useParams();
   const [orderBy, setOrderBy] = useState("CREATED_AT");
   const [orderDirection, setOrderDirection] = useState("DESC");
@@ -143,6 +151,15 @@ const RepositoryList = ({ singleView }) => {
     });
 
     data = singleData;
+  } else if (myReviews) {
+    const { data: myData } = useQuery(GET_AUTHORIZED_USER, {
+      fetchPolicy: "no-cache",
+      variables: {
+        includeReviews: true,
+      },
+    });
+
+    data = myData;
   } else {
     const { data: fullData } = useQuery(GET_REPOSITORIES, {
       variables: {
@@ -171,8 +188,15 @@ const RepositoryList = ({ singleView }) => {
 
   return (
     <RepositoryListContainer
-      repositories={singleView ? data?.repository : data?.repositories}
+      repositories={
+        singleView
+          ? data?.repository
+          : myReviews
+          ? data?.me?.reviews?.edges
+          : data?.repositories
+      }
       singleView={singleView}
+      myReviews={myReviews}
       handleOrderChange={handleOrderChange}
       searchKeyword={searchKeyword}
       setSearchKeyword={setSearchKeyword}
