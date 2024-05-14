@@ -1,7 +1,9 @@
 import { FlatList, StyleSheet, View } from "react-native";
+import { useParams } from "react-router-native";
+import useSingleRepository from "../hooks/useSingleRepository";
+import theme from "../theme";
 import RepositoryItem from "./RepositoryItem";
 import Text from "./Text";
-import theme from "../theme";
 
 const styles = StyleSheet.create({
   separator: {
@@ -58,18 +60,30 @@ const ReviewItem = ({ review }) => {
   );
 };
 
-const SingleRepository = ({ repositories, singleView }) => {
-  return (
+const SingleRepository = () => {
+  const { id } = useParams();
+
+  const { repository, fetchMore } = useSingleRepository({
+    first: 5,
+    repositoryId: id,
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
+
+  return repository ? (
     <FlatList
-      data={repositories.reviews.edges}
+      data={repository.reviews.edges}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <ReviewItem review={item.node} />}
       keyExtractor={(item) => item.node.id}
+      onEndReached={onEndReach}
       ListHeaderComponent={() => (
-        <RepositoryItem data={repositories} singleView={singleView} />
+        <RepositoryItem data={repository} singleView={true} />
       )}
     />
-  );
+  ) : null;
 };
 
 export default SingleRepository;

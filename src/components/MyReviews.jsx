@@ -3,6 +3,8 @@ import Text from "./Text";
 import theme from "../theme";
 import { useNavigate } from "react-router-native";
 import useDelete from "../hooks/useDelete";
+import { useQuery } from "@apollo/client";
+import { GET_AUTHORIZED_USER } from "../graphql/queries";
 
 const styles = StyleSheet.create({
   separator: {
@@ -145,15 +147,22 @@ const ReviewItem = ({ review }) => {
   );
 };
 
-const MyReviews = ({ reviews }) => {
-  return (
+const MyReviews = () => {
+  const { data } = useQuery(GET_AUTHORIZED_USER, {
+    fetchPolicy: "cache-and-network",
+    variables: {
+      includeReviews: true,
+    },
+  });
+
+  return data ? (
     <FlatList
-      data={reviews}
+      data={data.me.reviews.edges}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <ReviewItem review={item.node} />}
       keyExtractor={(item) => item.node.id}
     />
-  );
+  ) : null;
 };
 
 export default MyReviews;
